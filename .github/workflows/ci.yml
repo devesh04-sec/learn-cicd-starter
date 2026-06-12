@@ -20,5 +20,5 @@ jobs:
      with:
        go-version: "1.26.0"
 
-   - name: Your step name here
+   - name: Echo Go version
      run: go version
