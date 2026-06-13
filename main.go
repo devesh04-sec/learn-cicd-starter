@@ -3,14 +3,15 @@ package main
 import (
 	"database/sql"
 	"embed"
+	"github.com/go-chi/chi"
+	"github.com/go-chi/cors"
+	"github.com/joho/godotenv"
 	"io"
 	"log"
 	"net/http"
 	"os"
-
-	"github.com/go-chi/chi"
-	"github.com/go-chi/cors"
-	"github.com/joho/godotenv"
+	"strconv"
+	"time"
 
 	"github.com/bootdotdev/learn-cicd-starter/internal/database"
 
@@ -94,8 +95,11 @@ func main() {
 		ReadHeaderTimeout: 5 * time.Second,
 	}
 
-	log.Printf("Serving on port: %q\n", port)
+	//safePort := strings.NewReplacer("\n", "", "\r", "").Replace(port)
+	portNum, err := strconv.Atoi(port)
+	if err != nil {
+		log.Fatalf("Invalid PORT environment variable: %v", err)
+	}
+	log.Printf("Serving on port: %q\n", portNum)
 	log.Fatal(srv.ListenAndServe())
 }
-
-// test
