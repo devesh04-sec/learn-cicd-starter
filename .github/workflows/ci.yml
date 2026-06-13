@@ -11,9 +11,9 @@ jobs:
   name: Style
   runs-on: ubuntu-latest
 
- steps:
-  - name: Formate Code Proply
-    run: test -z $(go fmt ./...)
+  steps:
+   - name: Formate Code Proply
+     run: test -z $(go fmt ./...)
 
  tests:
   name: Tests
