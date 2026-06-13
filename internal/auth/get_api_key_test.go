@@ -57,20 +57,25 @@ func TestGetAPIKey(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			key, err := GetAPIKey(tt.headers)
 
-			// Check if the returned key matches expected
-			if key != tt.expectedKey {
-				t.Errorf("GetAPIKey() gotKey = %v, want %v", key, tt.expectedKey)
-			}
-
-			// Check error handling
+			// 1. Assert the error first (Idiomatic Go pattern)
 			if tt.expectedError != nil {
 				if err == nil {
-					t.Errorf("GetAPIKey() expected error '%v', but got nil", tt.expectedError)
-				} else if err.Error() != tt.expectedError.Error() {
+					t.Fatalf("GetAPIKey() expected error '%v', but got nil", tt.expectedError)
+				}
+				if err.Error() != tt.expectedError.Error() {
 					t.Errorf("GetAPIKey() error = %v, wantErr %v", err, tt.expectedError)
 				}
-			} else if err != nil {
-				t.Errorf("GetAPIKey() unexpected error: %v", err)
+				// If an error was expected and handled, we don't need to check the key value
+				return
+			}
+
+			if err != nil {
+				t.Fatalf("GetAPIKey() unexpected error: %v", err)
+			}
+
+			// 2. Assert the returned key matches expected
+			if key != tt.expectedKey {
+				t.Errorf("GetAPIKey() gotKey = %q, want %q", key, tt.expectedKey)
 			}
 		})
 	}
